@@ -1,0 +1,23 @@
+name: Push-to-EC2
+on:
+  push:
+    branches:
+main
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    steps:
+name: Checkout the files
+      uses: actions/checkout@v3
+
+name: Copy files with SSH
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{secrets.C:\Projeto-git\ec2-deploy-key.pem}}
+        ARGS: "-rltgoDzvO --delete"
+        SOURCE: "./"
+        REMOTE_HOST: "${{secrets.EC2_SSH_KEY}}"
+        REMOTE_USER: "ec2-user"
+        TARGET: "home/ec2-user"
+        EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh"
